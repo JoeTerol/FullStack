@@ -1,17 +1,34 @@
 import { useState } from "react";
-
+const Button = (props) => {
+  return(
+    <button onClick={props.onClick}>{props.text}</button>
+  )
+};
+const StaticLine = (props) => {
+  return(
+    <p>{props.text}: {props.value}</p>
+  )
+}
 const Statics = (props) => {
+  const { good, neutral, bad, total, positive, average } = props
+    if(good == 0 && neutral == 0 && bad == 0 && positive == 0 && average == 0 ) { 
+      return ( 
+        <h2>No FeedBack Given</h2>
+      )
+      }  
   return (
     <>
       <h1>stactitics</h1>
-      <p>good: {props.good}</p>
-      <p>neutral: {props.neutral}</p>
-      <p>bad: {props.bad}</p>
-      <p>total: {props.total}</p>
-      <p>postive: {props.positive}</p>
-      <p>average {props.average}</p>
+       <StaticLine text={"Good: "} value={good} />
+       <StaticLine text={"Neutral: "} value={neutral} />
+       <StaticLine text={"Bad: "} value={bad} />
+       <StaticLine text={"Total: "} value={total} />
+       <StaticLine text={"Positive: "} value={positive} />
+       <StaticLine text={"Average: "} value={average} />
+      
     </>
   );
+
 };
 
 const App = () => {
@@ -24,14 +41,19 @@ const App = () => {
 
   const calculateStatistics = () => {
     const updatedTotal = good + neutral + bad;
-    setTotal(updatedTotal);
+  
+    if (updatedTotal > 0) {
+      const updatedAverage = (good - bad) / updatedTotal;
+      const updatedPositive = (good * 100) / updatedTotal;
 
-    const updatedAverage = (good - bad) / updatedTotal;
-    setAverage(updatedAverage);
-
-    const updatedPositive = (good * 100) / total;
-    setPositive(updatedPositive);
-  };
+  
+      setAverage(updatedAverage);
+      setPositive(updatedPositive);
+    }else{
+      setAverage(0);
+      setPositive(0);
+    }
+    }
 
   const handleGood = () => {
     const updatedGood = good + 1;
@@ -55,9 +77,9 @@ const App = () => {
     <>
       <div>
         <h1>give feedback</h1>
-        <button onClick={handleGood}>good</button>
-        <button onClick={handleNeutral}>neutral</button>
-        <button onClick={handleBad}>bad</button>
+        <Button text="good" onClick={handleGood} />
+        <Button text="neutral" onClick={handleNeutral} />
+        <Button text="bad" onClick={handleBad} />
       </div>
       <Statics
         good={good}
@@ -65,6 +87,7 @@ const App = () => {
         bad={bad}
         neutral={neutral}
         average={average}
+        total={total}
       />
     </>
   );
