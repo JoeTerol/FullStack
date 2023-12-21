@@ -1,34 +1,33 @@
 import { useState } from "react";
 const Button = (props) => {
-  return(
-    <button onClick={props.onClick}>{props.text}</button>
-  )
+  return <button onClick={props.onClick}>{props.text}</button>;
 };
 const StaticLine = (props) => {
-  return(
-    <p>{props.text}: {props.value}</p>
-  )
-}
+  return (
+    <table>
+      <tr>
+        <td>{props.text}</td>
+        <td>{props.value}</td>
+      </tr>
+    </table>
+  );
+};
 const Statics = (props) => {
-  const { good, neutral, bad, total, positive, average } = props
-    if(good == 0 && neutral == 0 && bad == 0 && positive == 0 && average == 0 ) { 
-      return ( 
-        <h2>No FeedBack Given</h2>
-      )
-      }  
+  const { good, neutral, bad, total, positive, average } = props;
+  if (good == 0 && neutral == 0 && bad == 0 && positive == 0 && average == 0) {
+    return <h2>No FeedBack Given</h2>;
+  }
   return (
     <>
       <h1>stactitics</h1>
-       <StaticLine text={"Good: "} value={good} />
-       <StaticLine text={"Neutral: "} value={neutral} />
-       <StaticLine text={"Bad: "} value={bad} />
-       <StaticLine text={"Total: "} value={total} />
-       <StaticLine text={"Positive: "} value={positive} />
-       <StaticLine text={"Average: "} value={average} />
-      
+      <StaticLine text={"Good: "} value={good} />
+      <StaticLine text={"Neutral: "} value={neutral} />
+      <StaticLine text={"Bad: "} value={bad} />
+      <StaticLine text={"Total: "} value={total} />
+      <StaticLine text={"Positive: "} value={positive + " %"}/>
+      <StaticLine text={"Average: "} value={average} />
     </>
   );
-
 };
 
 const App = () => {
@@ -41,19 +40,18 @@ const App = () => {
 
   const calculateStatistics = () => {
     const updatedTotal = good + neutral + bad;
-  
+
     if (updatedTotal > 0) {
       const updatedAverage = (good - bad) / updatedTotal;
       const updatedPositive = (good * 100) / updatedTotal;
 
-  
       setAverage(updatedAverage);
       setPositive(updatedPositive);
-    }else{
+    } else {
       setAverage(0);
       setPositive(0);
     }
-    }
+  };
 
   const handleGood = () => {
     const updatedGood = good + 1;
