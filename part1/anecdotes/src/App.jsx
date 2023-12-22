@@ -28,8 +28,9 @@ const App = () => {
     newVotes[selected] += 1;
     setVotes(newVotes);
 
-  }
-  console.log(selected);
+  };
+  const mostVotedIndex = votes.indexOf(Math.max(...votes));
+
   return (
     <>
       <div>
@@ -38,6 +39,15 @@ const App = () => {
       </div>
       <Button onClick={handleVote} text="Vote" />
       <Button onClick={handleRandomSearch} text="next anecdote" />
+      <div>
+        <h2>Most Voted</h2>
+        {votes.every((vote) => vote === 0) ? (<p>No votes yet</p>) : (
+          <>
+          <p>{anecdotes[mostVotedIndex]}</p>
+          <p>Votes: {votes[mostVotedIndex]}</p>
+          </>
+        )}
+      </div>
     </>
   );
 };
